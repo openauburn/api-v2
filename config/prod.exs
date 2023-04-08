@@ -20,9 +20,14 @@ config :open_auburn_api, OpenAuburnApiWeb.Endpoint,
     load_from_system_env: true,
     http: [port: {:system, "PORT"}],
     check_origin: false,
+    url: [host: 'localhost', port: {:system, "PORT"}],
     server: true,
     root: ".",
     cache_static_manifest: "priv/static/cache_manifest.json"
+    server: [
+       hostname: "localhost",
+       # ...
+      ]
 
 # Runtime production configuration, including reading
 # of environment variables, is done on config/runtime.exs.

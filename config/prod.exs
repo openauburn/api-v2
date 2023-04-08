@@ -23,7 +23,7 @@ config :open_auburn_api, OpenAuburnApiWeb.Endpoint,
     url: [host: 'localhost', port: {:system, "PORT"}],
     server: true,
     root: ".",
-    cache_static_manifest: "priv/static/cache_manifest.json"
+    cache_static_manifest: "priv/static/cache_manifest.json",
     server: [
        hostname: "localhost",
        # ...

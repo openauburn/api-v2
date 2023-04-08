@@ -1,0 +1,8 @@
+/_build/
+/deps/
+/doc/
+/cover/
+/.fetch
+*.ez
+open_auburn_api-*.tar
+erl_crash.dump

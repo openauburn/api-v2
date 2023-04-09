@@ -11,8 +11,7 @@ config :open_auburn_api, OpenAuburnApi.Repo,
   hostname: System.get_env("PSQL_HOST"),
   database: System.get_env("PSQL_GEN_DB"),
   stacktrace: true,
-  show_sensitive_data_on_connection_error: true,
-
+  # show_sensitive_data_on_connection_error: true,
   pool_size: 15
 
 

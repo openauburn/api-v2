@@ -5,7 +5,7 @@ FROM elixir:1.14.4-slim
 
 ENV APP_NAME=open_auburn_api
 ENV MIX_ENV=prod
-ENV PORT=8080
+ENV PORT=4000
 
 
 EXPOSE ${PORT}

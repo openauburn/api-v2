@@ -53,7 +53,8 @@ defmodule OpenAuburnApi.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       {:open_api_spex, "~> 3.16"},
-      {:distillery, "~> 2.1"}
+      {:distillery, "~> 2.1"},
+      {:dotenv, "~> 3.1"}
     ]
   end
 

@@ -19,7 +19,6 @@ defmodule OpenAuburnApiWeb.Router do
     plug :put_secure_browser_headers
   end
 
-
   scope "/api", OpenAuburnApiWeb do
     pipe_through :api
     get "/", DefaultController, :index
@@ -32,7 +31,11 @@ defmodule OpenAuburnApiWeb.Router do
 
   scope "/" do
     pipe_through [:browser, :admins_only]
-    live_dashboard "/dashboard", metrics: OpenAuburnApiWeb.Telemetry
+
+    live_dashboard "/dashboard",
+      metrics: OpenAuburnApiWeb.Telemetry,
+      ecto_repos: [OpenAuburnApi.Repo],
+      ecto_psql_extras_options: [long_running_queries: [threshold: "200 milliseconds"]]
   end
 
   defp admin_basic_auth(conn, _opts) do
@@ -40,5 +43,4 @@ defmodule OpenAuburnApiWeb.Router do
     password = System.fetch_env!("AUTH_PASSWORD")
     Plug.BasicAuth.basic_auth(conn, username: username, password: password)
   end
-
 end

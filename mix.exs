@@ -54,7 +54,8 @@ defmodule OpenAuburnApi.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:open_api_spex, "~> 3.16"},
       {:distillery, "~> 2.1"},
-      {:phoenix_live_dashboard, "~> 0.7"}
+      {:phoenix_live_dashboard, "~> 0.7"},
+      {:ecto_psql_extras, "~> 0.6"},
     ]
   end
 

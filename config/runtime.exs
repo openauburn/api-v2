@@ -36,7 +36,7 @@ if config_env() == :prod do
     hostname: System.get_env("PSQL_HOST"),
     database: System.get_env("PSQL_GEN_DB"),
     stacktrace: true,
-    pool_size: 15
+    pool_size: 5
   # The secret key base is used to sign/encrypt cookies and other secrets.
   # A default value is used in config/dev.exs and config/test.exs but you
   # want to use a different value for prod and you most likely don't want

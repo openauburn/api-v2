@@ -12,7 +12,7 @@ config :open_auburn_api, OpenAuburnApi.Repo,
   database: System.get_env("PSQL_GEN_DB"),
   stacktrace: true,
   # show_sensitive_data_on_connection_error: true,
-  pool_size: 15
+  pool_size: 5
 
 
 config :open_auburn_api, OpenAuburnApiWeb.Endpoint,
@@ -22,11 +22,8 @@ config :open_auburn_api, OpenAuburnApiWeb.Endpoint,
     url: [host: 'localhost', port: {:system, "PORT"}],
     server: true,
     root: ".",
-    cache_static_manifest: "priv/static/cache_manifest.json",
-    server: [
-       hostname: "localhost",
-       # ...
-      ]
+    cache_static_manifest: "priv/static/cache_manifest.json"
+
 
 # Runtime production configuration, including reading
 # of environment variables, is done on config/runtime.exs.

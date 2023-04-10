@@ -30,7 +30,7 @@ defmodule OpenAuburnApi.MixProject do
   def application do
     [
       mod: {OpenAuburnApi.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :os_mon]
     ]
   end
 
@@ -54,7 +54,7 @@ defmodule OpenAuburnApi.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:open_api_spex, "~> 3.16"},
       {:distillery, "~> 2.1"},
-      {:dotenv, "~> 3.1"}
+      {:phoenix_live_dashboard, "~> 0.7"}
     ]
   end
 

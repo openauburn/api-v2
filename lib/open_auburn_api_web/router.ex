@@ -27,6 +27,8 @@ defmodule OpenAuburnApiWeb.Router do
   scope "/datasets/:table_name", OpenAuburnApiWeb do
     pipe_through :api
     get "/", DatasetController, :index
+    get "/:id", DatasetController, :show
+    post "/", DatasetController, :create
   end
 
   scope "/" do

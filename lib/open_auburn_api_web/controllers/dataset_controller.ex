@@ -1,5 +1,6 @@
 defmodule OpenAuburnApiWeb.DatasetController do
   use OpenAuburnApiWeb, :controller
+  # alias OpenAuburnApi.{Datasets.Dataset}
   import Plug.Conn
 
   @optional_params %{"page" => 1, "page_size" => 10}
@@ -7,16 +8,11 @@ defmodule OpenAuburnApiWeb.DatasetController do
     table_name = conn.params["table_name"]
 
     params = Map.merge(@optional_params, params)
-    # page = conn.params["page"] || 1
-    # page_size = conn.params["page_size"] || 10
-
-      # Ensure that page and page_size are integers
     page = params |> Map.get("page", 1)
     page_size = params |> Map.get("page_size", 1)
 
     {page_i, _} = :string.to_integer(to_charlist(page))
     {page_size_i, _} = :string.to_integer(to_charlist(page_size))
-    # query = from t in table_name, select: t.*
     from_clause = "FROM #{table_name}"
     select_clause = "SELECT *"
 
@@ -31,12 +27,12 @@ defmodule OpenAuburnApiWeb.DatasetController do
     """
 
     {:ok, result} = Ecto.Adapters.SQL.query(OpenAuburnApi.Repo, sql, [offset, limit])
-    # IO.puts(data)# query = from(Helpers.table(table_name), select: [:*])
-    # data = OpenAuburnApi.Repo.all(query)
 
-    data = result.rows |> Enum.map(fn row ->
-      Enum.zip(result.columns, row) |> Map.new()
-    end)
+    data =
+      result.rows
+      |> Enum.map(fn row ->
+        Enum.zip(result.columns, row) |> Map.new()
+      end)
 
     json = Jason.encode!(data)
 
@@ -44,13 +40,54 @@ defmodule OpenAuburnApiWeb.DatasetController do
     |> put_status(200)
     |> put_resp_content_type("application/json")
     |> text(json)
-    # conn
-    # # |> put_status(200)
-    # # |> json(data)
   end
 
-  # defp from(table) do
-  #   Ecto.Query.from(t in fragment(table), select: fragment("t.*"))
-  # end
+  def show(conn, %{"id" => id}) do
+    table_name = conn.params["table_name"]
+    sql = "SELECT * FROM #{table_name} WHERE id=#{id}"
+    {:ok, result} = Ecto.Adapters.SQL.query(OpenAuburnApi.Repo, sql)
 
+    data =
+      result.rows
+      |> Enum.map(fn row ->
+        Enum.zip(result.columns, row) |> Map.new()
+      end)
+
+    json = Jason.encode!(data)
+
+    conn
+    |> put_status(200)
+    |> put_resp_content_type("application/json")
+    |> text(json)
+  end
+
+  def create(conn, %{"table_name" => table_name, "key" => key}) do
+    if(key == System.fetch_env!("AUTH_PASSWORD")) do
+      {:ok, result} =
+        Ecto.Adapters.SQL.query(OpenAuburnApi.Repo, "SELECT * FROM #{table_name} WHERE false")
+
+      object = conn.body_params
+      input_fields = Map.keys(object)
+      fields = result.columns
+      fields = List.delete(fields, "id")
+
+      if Enum.sort(fields) == Enum.sort(input_fields) do
+        n = object |> Map.values() |> length()
+        params = Enum.map(1..n, &"$#{&1}")
+        placeholders = Enum.join(params, ", ")
+
+        sql =
+          "INSERT INTO #{table_name} " <>
+            "(#{Enum.join(object |> Map.keys(), ",")}) " <>
+            "VALUES (#{placeholders})"
+
+        Ecto.Adapters.SQL.query!(OpenAuburnApi.Repo, sql, Map.values(object))
+
+        conn |> put_status(200) |> json(%{message: "Record inserted successfully."})
+      else
+      end
+    else
+      conn |> put_status(401) |> json(%{message: "Unauthorized."})
+    end
+  end
 end
